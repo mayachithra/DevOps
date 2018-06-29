@@ -1,0 +1,14 @@
+- name: This play will demonstrate apt moule
+  hosts: all
+  tasks:
+    - name: Install vim editor
+      apt: name=vim state=latest update_cache=yes
+
+    - name: Install tree utility
+      apt: name=tree state=latest update_cache=yes
+
+- name: This is the second play
+  hosts: server1
+  tasks:
+    - name: This task belongs to second play
+      debug: msg="Second play - First task"

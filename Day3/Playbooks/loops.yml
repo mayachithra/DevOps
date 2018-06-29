@@ -1,0 +1,6 @@
+ - name: Demonstrates use of ansible loops
+   hosts: localhost
+   tasks:
+     - name: Repeat this task 5 times
+       debug: msg="Count is {{item}}."
+       with_sequence: start=1 end=5

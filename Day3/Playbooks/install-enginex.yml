@@ -1,0 +1,48 @@
+- name: Installs, Configures and Deploys web page in nginx web server
+  hosts: all
+  vars:
+    - greeting_msg: DevOps
+    - automation_tool: Ansible
+    - provisioner_tool: Docker 
+   
+  tasks:
+    - name: Install nginx web server on Ubuntu
+      apt: name=nginx state=latest update_cache=yes
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+
+    - name: Install epel-release package on CentOS
+      yum: name=epel-release state=latest
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+
+    - name: Install nginx web server on CentOS
+      yum: name=nginx state=latest
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+
+    - name: Configure web root folder on Ubuntu
+      copy: src=default dest=/etc/nginx/sites-available/default
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+
+    - name: Configure web root folder on CentOS
+      copy: src=default.conf dest=/etc/nginx/conf.d/default.conf
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+
+      
+
+    - name: Restart nginx web server on Ubuntu
+      service: name=nginx state=restarted
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+
+    - name: Restart nginx web server on CentOS
+      shell: service nginx restart
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+
+    - name: Create the web root folder
+     #shell: mkdir -p /var/html
+      file: path=/var/html state=directory mode=777
+
+    - name: Deploy our custom html page in nginx web server
+      template: src=index.html.j2 dest=/var/html/index.html
+
+    - name: Restart nginx web server
+      service: name=nginx state=restarted
+ 

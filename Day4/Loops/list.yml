@@ -1,0 +1,15 @@
+- name: Demonstrates list and how to iterate a loop user-defined vriable
+  hosts: localhost
+  vars:
+    - my_softwares:
+        - vim
+        - tree
+        - default-jdk
+        - maven
+        - ruby
+
+  tasks:
+   - name: Install the software tool
+     debug: msg="Need to install {{item}} utility."
+     #apt: name="{{item}} state=present update_cache=yes
+     with_list: "{{my_softwares}}"

@@ -1,0 +1,4 @@
+   - name: Create the web root folder
+     #shell: mkdir -p /var/html
+      file: path=/var/html state=directory mode=777
+

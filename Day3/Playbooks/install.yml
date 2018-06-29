@@ -1,0 +1,11 @@
+    - name: Install nginx web server on Ubuntu
+      apt: name=nginx state=latest update_cache=yes
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+
+    - name: Install epel-release package on CentOS
+      yum: name=epel-release state=latest
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+
+    - name: Install nginx web server on CentOS
+      yum: name=nginx state=latest
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
